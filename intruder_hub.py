@@ -6,9 +6,9 @@ import config as cfg
 import argparse
 
 
-def start_attack(attack_type: int, start: int, duration: int):
+def start_attack(attack_type: int, start: int, duration: int, addr: str, port: int):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((cfg.server_addr, cfg.server_port))
+        s.connect((addr, port))
         payload = str(attack_type) + "/" + str(int(time.time()) +
                                                start) + "/" + str(duration)
         s.sendall(payload.encode("utf-8"))
@@ -26,6 +26,10 @@ if __name__ == "__main__":
                         help="Start time offet (defaults to 0)")
     parser.add_argument('-d', type=int, default=60, dest="duration",
                         help='Attack duration (defaults to 60s)')
+    parser.add_argument('-a', type=str, default=cfg.node_addr, dest="node_addr",
+                        help='Node IP address (defaults to cfg.node_addr)')
+    parser.add_argument('-p', type=int, default=cfg.node_port, dest="node_port",
+                        help='Attack duration (defaults to 60s)')
 
     args = parser.parse_args()
-    start_attack(args.attack_type, args.start, args.duration)
+    start_attack(args.attack_type, args.start, args.duration, args.node_addr, args.node_port)
