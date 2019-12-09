@@ -29,4 +29,4 @@ def run_server(addr: str, port: int):
 
 
 if __name__ == "__main__":
-    run_server(cfg.server_addr, cfg.server_port)
+    run_server(cfg.node_addr, cfg.node_port)
