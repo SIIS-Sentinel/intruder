@@ -32,4 +32,5 @@ if __name__ == "__main__":
                         help='Attack duration (defaults to 60s)')
 
     args = parser.parse_args()
-    start_attack(args.attack_type, args.start, args.duration, args.node_addr, args.node_port)
+    start_attack(args.attack_type, args.start, args.duration,
+                 args.node_addr, args.node_port)
