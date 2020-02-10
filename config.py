@@ -10,6 +10,7 @@ BLACK_HOLE = 2
 GREY_HOLE = 3
 
 # Attack parameters
+pivot_addr = "ether.cosson.io"
 exfil_addr = "ether.cosson.io"
 exfil_port_min = 10000
 exfil_port_max = 60000

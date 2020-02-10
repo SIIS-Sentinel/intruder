@@ -6,11 +6,19 @@ import config as cfg
 import argparse
 
 
-def start_attack(attack_type: int, start: int, duration: int, addr: str, port: int):
+def start_attack(
+        attack_type: int,
+        start: int,
+        duration: int,
+        addr: str,
+        port: int,
+        intensity: int):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((addr, port))
-        payload = str(attack_type) + "/" + str(int(time.time()) +
-                                               start) + "/" + str(duration)
+        payload = str(attack_type) + "/" + \
+            str(int(time.time()) + start) + "/" +\
+            str(duration) + "/" + \
+            str(intensity)
         s.sendall(payload.encode("utf-8"))
         data = s.recv(1024)
 
@@ -29,8 +37,10 @@ if __name__ == "__main__":
     parser.add_argument('-a', type=str, default=cfg.node_addr, dest="node_addr",
                         help='Node IP address (defaults to cfg.node_addr)')
     parser.add_argument('-p', type=int, default=cfg.node_port, dest="node_port",
-                        help='Attack duration (defaults to 60s)')
+                        help='Node port (defaults to cfg.node_port)')
+    parser.add_argument('-i', type=int, default=100, dest="intensity",
+                        help="Attack intensity (between 0 and 100, defaults to 100")
 
     args = parser.parse_args()
     start_attack(args.attack_type, args.start, args.duration,
-                 args.node_addr, args.node_port)
+                 args.node_addr, args.node_port, args.intensity)
