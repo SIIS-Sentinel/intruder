@@ -1,5 +1,5 @@
 # Network
-node_addr: str = '130.203.33.155'
+node_addr: str = 'node.local'
 node_port: int = 50500
 node_iface: str = "wlan0"
 
