@@ -56,8 +56,8 @@ def start_attack(
     print("Starting attack %d, starting a time %d, lasting for %d seconds" % (
         attack_type, start, duration))
     # Wait until the start of the attack
-    if (time.time() - duration > 0):
-        time.sleep(time.time() - duration)
+    if (start > time.time()):
+        time.sleep(start-time.time())
     if attack_type == cfg.PIVOT_NMAP:
         pivot_attack(duration, intensity)
     elif attack_type == cfg.EXFILTRATION:
@@ -66,15 +66,16 @@ def start_attack(
         routing_attack(duration, intensity)
     elif attack_type == cfg.GREY_HOLE:
         routing_attack(duration, intensity, 0.4)
+    print("Attack completed")
 
 
-def run_server(addr: str, port: int) -> None:
+def run_server(server_addr: str, port: int) -> None:
     # Runs an attacker server forever
     while True:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             # Create the socket
             s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            s.bind((addr, port))
+            s.bind((server_addr, port))
             s.listen()
             # Accept the connection
             conn, addr = s.accept()
