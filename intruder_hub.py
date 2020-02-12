@@ -5,6 +5,22 @@ import time
 import config as cfg
 import argparse
 
+from sql import session, Attack, Node
+
+
+def get_node_id(name: str):
+    node = session.query(Node.id).filter_by(name=name).all()
+    if len(node) == 0:
+        return 0
+    return node[0].id
+
+
+def add_attack(node: int, ts: float, attack_type: int):
+    newAttack: Attack = Attack(
+        timestamp=ts, attack_type=attack_type, node_id=node)
+    session.add(newAttack)
+    session.commit()
+
 
 def start_attack(
         attack_type: int,
@@ -14,15 +30,20 @@ def start_attack(
         port: int,
         intensity: int):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        start_time: int = int(time.time() + start)
         s.connect((addr, port))
-        payload = str(attack_type) + "/" + \
-            str(int(time.time()) + start) + "/" +\
+        payload: str = str(attack_type) + "/" + \
+            str(start_time) + "/" + \
             str(duration) + "/" + \
             str(intensity)
-        s.sendall(payload.encode("utf-8"))
-        data = s.recv(1024)
-
+        payload_bytes: bytes = payload.encode("utf-8")
+        s.sendall(payload_bytes)
+        data: bytes = s.recv(1024)
     print('Received', data.decode())
+    # Log the attack in the DB for plotting
+    # TODO: fix the name determination
+    node_id: int = get_node_id("node_1")
+    add_attack(node_id, start_time, attack_type)
 
 
 if __name__ == "__main__":
