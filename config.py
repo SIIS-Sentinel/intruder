@@ -1,9 +1,7 @@
 # Database information
-db_path = "postgresql://pi:password@localhost/watchtower"
+db_path = "postgresql://pi:password@localhost/sentinel"
 
 # Network
-# node_addr: str = 'node.local'
-# node_addr: str = 'node'
 node_addr: str = '130.203.33.155'
 node_port: int = 50500
 node_iface: str = "wlan0"
