@@ -6,6 +6,14 @@ node_addr: str = '130.203.33.155'
 node_port: int = 50500
 node_iface: str = "wlan0"
 
+# MQTT information
+broker_addr: str = "hub.local"
+broker_port: int = 8883
+ca_file: str = "/certs/CA.pem"
+cert_file: str = "/certs/node.crt"
+key_file: str = "/certs/node.key"
+topic_prefix: str = "/intruder/"
+
 # Attack types
 PIVOT_NMAP = 0
 EXFILTRATION = 1
