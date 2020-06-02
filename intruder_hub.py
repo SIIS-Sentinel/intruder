@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import socket
 import time
 import config_hub as cfg
 import argparse
