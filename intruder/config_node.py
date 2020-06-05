@@ -9,10 +9,10 @@ node_iface: str = "wlan0"
 # MQTT information
 broker_addr: str = "hub.local"
 broker_port: int = 8883
-ca_file: str = "/certs/CA.pem"
-cert_file: str = "/certs/node.crt"
-key_file: str = "/certs/node.key"
-topic_prefix: str = "/intruder/"
+cafile: str = "/certs/CA.pem"
+certfile: str = "/certs/node.crt"
+keyfile: str = "/certs/node.key"
+topic_prefix: str = "intruder/"
 
 # Attack types
 PIVOT_NMAP = 0

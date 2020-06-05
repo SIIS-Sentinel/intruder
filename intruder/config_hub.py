@@ -9,9 +9,9 @@ node_iface: str = "wlan0"
 # MQTT information
 broker_addr: str = "hub.local"
 broker_port: int = 8883
-ca_file: str = "/certs/CA.pem"
-cert_file: str = "/certs/hub.crt"
-key_file: str = "/certs/hub.key"
+cafile: str = "/certs/CA.pem"
+certfile: str = "/certs/hub.crt"
+keyfile: str = "/certs/hub.key"
 topic_prefix: str = "/intruder/"
 
 # Default values
