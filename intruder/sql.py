@@ -1,10 +1,10 @@
-from config_hub import db_path
 from sqlalchemy import create_engine, Column, Integer, Float, String, ForeignKey
 from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
 from typing import Any
 
+from intruder.config_hub import db_path
 
 Base = declarative_base()  # type: Any
 

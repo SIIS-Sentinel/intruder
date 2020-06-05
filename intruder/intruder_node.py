@@ -13,7 +13,7 @@ import intruder.config_node as cfg
 
 
 class IntruderNode():
-    def __init__(self, name: str = "mqtt_abstract_1", client: mqtt.Client = None):
+    def __init__(self, name: str = "mqtt_intruder_1", client: mqtt.Client = None):
         self.name = name
         self.intruder_topic: str = cfg.topic_prefix + self.name
 
