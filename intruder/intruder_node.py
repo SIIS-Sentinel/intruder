@@ -9,7 +9,7 @@ from typing import List
 
 import paho.mqtt.client as mqtt
 
-import config_node as cfg
+import intruder.config_node as cfg
 
 
 class IntruderNode():
