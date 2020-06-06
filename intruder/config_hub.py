@@ -7,12 +7,12 @@ node_port: int = 50500
 node_iface: str = "wlan0"
 
 # MQTT information
-broker_addr: str = "hub.local"
+broker_addr: str = "localhost"
 broker_port: int = 8883
 cafile: str = "/certs/CA.pem"
 certfile: str = "/certs/hub.crt"
 keyfile: str = "/certs/hub.key"
-topic_prefix: str = "/intruder/"
+topic_prefix: str = "intruder/"
 
 # Default values
 default_node: str = "node"
