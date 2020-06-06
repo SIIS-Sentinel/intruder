@@ -1,5 +1,5 @@
 # Database information
-db_path = "postgresql://pi:password@hub.local/sentinel"
+db_path = "postgresql://pi:password@localhost/sentinel"
 
 # Network
 node_addr: str = '130.203.33.155'
