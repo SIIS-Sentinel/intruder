@@ -97,8 +97,6 @@ class IntruderNode():
             start: int,
             duration: int,
             intensity: int) -> None:
-        print("Starting attack %d, starting a time %d, lasting for %d seconds" % (
-            attack_type, start, duration))
         # Wait until the start of the attack
         if (start > time.time()):
             time.sleep(start - time.time())
@@ -120,6 +118,11 @@ class IntruderNode():
             attack = self.routing_attack
             args = (duration, intensity)
             # self.routing_attack(duration, intensity, 0.4)
+        else:
+            print("Invalid attack type")
+            return
+        print("Starting attack %d, starting a time %d, lasting for %d seconds" % (
+            attack_type, start, duration))
         th: threading.Thread = threading.Thread(target=attack, args=args)
         th.start()
         print("Attack started")
