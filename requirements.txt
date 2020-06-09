@@ -1,5 +1,5 @@
 autopep8==1.5.2
--e git+https://github.com/AdrienCos/bookkeeper#egg=bookkeeper
+bookkeeper @ git+https://github.com/AdrienCos/bookkeeper
 dnspython==1.16.0
 flake8==3.8.2
 importlib-metadata==1.6.0
