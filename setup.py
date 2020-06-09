@@ -11,7 +11,7 @@ setup(
     description="The Intruder code for the Sentinel experiments",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/AdrienCos/Intruder",
+    url="https://github.com/AdrienCos/intruder",
     packages=find_packages(),
     install_requires=[
         'dnspython',
