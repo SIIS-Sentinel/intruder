@@ -3,12 +3,18 @@ import time
 import paho.mqtt.client as mqtt
 
 import intruder.config_hub as cfg
-from intruder.sql import session, Attack, Node
+
+from bookkeeper.sql import create_sessions, Session, Attack, Node
 
 
 class IntruderHub():
-    def __init__(self, name: str = "mqtt_intruder_1", client: mqtt.Client = None, debug: bool = False):
+    def __init__(self, name: str = "mqtt_intruder_1", client: mqtt.Client = None, debug: bool = False, db_path: str = None):
         self.name: str = name
+        if db_path is None:
+            self.db_path = cfg.db_path
+        else:
+            self.db_path = db_path
+        self.session: Session = create_sessions(self.db_path)
         self.intruder_prefix: str = cfg.topic_prefix
         self.control_topic: str = cfg.topic_prefix + "control"
 
@@ -40,19 +46,17 @@ class IntruderHub():
             intensity: int = int(payload_split[4])
             self.start_attack(node_name, attack_type, start, duration, intensity)
 
-    @staticmethod
-    def get_node_id(name: str):
-        node = session.query(Node.id).filter_by(name=name).all()
+    def get_node_id(self, name: str):
+        node = self.session.query(Node.id).filter_by(name=name).all()
         if len(node) == 0:
             return 0
         return node[0].id
 
-    @staticmethod
-    def add_attack(node: int, ts: float, attack_type: int):
+    def add_attack(self, node: int, ts: float, attack_type: int):
         newAttack: Attack = Attack(
             timestamp=ts, attack_type=attack_type, node_id=node)
-        session.add(newAttack)
-        session.commit()
+        self.session.add(newAttack)
+        self.session.commit()
 
     def start_attack(
             self,
@@ -74,6 +78,6 @@ class IntruderHub():
 
 
 if __name__ == "__main__":
-    intr = IntruderHub()
+    intr = IntruderHub(db_path="postgresql://pi:password@10.0.0.222/sentinel")
     intr.connect()
     intr.client.loop_forever()
