@@ -19,7 +19,7 @@ setup(
         'paho-mqtt',
         'psycopg2',
         'python-nmap',
-        'SQLAlchemy'
+        'bookkeeper @ git+http://github.com/AdrienCos/bookkeeper#egg=bookkeeper'
     ],
     python_requires=">=3.5"
 )
