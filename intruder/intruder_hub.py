@@ -46,8 +46,11 @@ class IntruderHub():
                 duration: int = int(payload_split[3])
                 intensity: int = int(payload_split[4])
                 self.start_attack(node_name, attack_type, start, duration, intensity)
+                print(f"Intruder: started attack {attack_type} on {node_name}")
             except Exception as e:
                 print(f"Intruder: exception '{e}' occurred during control message sending")
+        else:
+            print(f"Intruder: message from wrong topic received: {message.topic}")
 
     def get_node_id(self, name: str):
         node = self.session.query(Node.id).filter_by(name=name).all()
