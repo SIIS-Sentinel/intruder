@@ -37,14 +37,17 @@ class IntruderHub():
 
     def on_message(self, client: mqtt.Client, userdata, message: mqtt.MQTTMessage) -> None:
         if message.topic == self.control_topic:
-            payload: str = message.payload.decode("utf-8")
-            payload_split = payload.split("/")
-            node_name: str = payload_split[0]
-            attack_type: int = int(payload_split[1])
-            start: int = int(payload_split[2])
-            duration: int = int(payload_split[3])
-            intensity: int = int(payload_split[4])
-            self.start_attack(node_name, attack_type, start, duration, intensity)
+            try:
+                payload: str = message.payload.decode("utf-8")
+                payload_split = payload.split("/")
+                node_name: str = payload_split[0]
+                attack_type: int = int(payload_split[1])
+                start: int = int(payload_split[2])
+                duration: int = int(payload_split[3])
+                intensity: int = int(payload_split[4])
+                self.start_attack(node_name, attack_type, start, duration, intensity)
+            except Exception as e:
+                print(f"Intruder: exception '{e}' occurred during control message sending")
 
     def get_node_id(self, name: str):
         node = self.session.query(Node.id).filter_by(name=name).all()
