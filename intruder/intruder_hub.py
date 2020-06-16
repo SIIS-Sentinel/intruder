@@ -48,7 +48,7 @@ class IntruderHub():
                 self.start_attack(node_name, attack_type, start, duration, intensity)
                 print(f"Intruder: started attack {attack_type} on {node_name}")
             except Exception as e:
-                print(f"Intruder: exception '{e}' occurred during control message sending")
+                print(f"Intruder: exception '{e}' occurred during control message reception")
         else:
             print(f"Intruder: message from wrong topic received: {message.topic}")
 
@@ -77,7 +77,7 @@ class IntruderHub():
             str(duration) + "/" + \
             str(intensity)
         intruder_topic: str = self.intruder_prefix + node_name
-        self.client.publish(intruder_topic, payload, qos=1)
+        self.client.publish(intruder_topic, payload, qos=0)
         # Log the attack in the DB for plotting
         node_id: int = self.get_node_id(node_name)
         self.add_attack(node_id, start_time, attack_type)
