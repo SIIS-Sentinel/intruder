@@ -113,6 +113,8 @@ class IntruderNode():
         # Wait until the start of the attack
         if (start > time.time()):
             time.sleep(start - time.time())
+        # Convert duration from minutes to seconds
+        duration *= 60
         attack: Callable
         args: Tuple
         if attack_type == cfg.PIVOT_NMAP:
