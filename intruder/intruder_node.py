@@ -5,6 +5,7 @@ import nmap
 import dns.resolver
 import random as rd
 import threading
+import requests
 
 from typing import List, Callable, Tuple
 
@@ -91,6 +92,18 @@ class IntruderNode():
             nm.scan(cfg.pivot_addr, arguments="-sn")
         print("Attack completed")
 
+    def c2_attack(self, duration: int, intensity: int) -> None:
+        # This simulates the side effects of a node pinging its C&C periodically
+        # Pinging perdiod is `100 - intensity`, in seconds
+        start_time: int = int(time.time())
+        period: int = 100 - intensity
+        while (time.time() - start_time < duration):
+            # Sleep until the next ping or the end of the attack
+            requests.get(f"http://{cfg.c2_addr}:{cfg.c2_port}")
+            time_to_duration: int = int(duration - (time.time() - start_time))
+            sleep_duration: int = min(time_to_duration, period)
+            time.sleep(sleep_duration)
+
     def start_attack(
             self,
             attack_type: int,
@@ -118,6 +131,9 @@ class IntruderNode():
             attack = self.routing_attack
             args = (duration, intensity)
             # self.routing_attack(duration, intensity, 0.4)
+        elif attack == cfg.C2_HEARTBEAT:
+            attack = self.c2_attack
+            args = (duration, intensity)
         else:
             print("Invalid attack type")
             return

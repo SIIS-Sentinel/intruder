@@ -22,6 +22,7 @@ PIVOT_NMAP = 0
 EXFILTRATION = 1
 BLACK_HOLE = 2
 GREY_HOLE = 3
+C2_HEARTBEAT = 4
 
 # Attack parameters
 pivot_addr = "ether.cosson.io"
@@ -31,3 +32,5 @@ exfil_port_max = 60000
 black_hole_src = "google.com"
 black_hole_dest = 'ether.cosson.io'
 black_hole_port = 12345
+c2_addr = "ether.cosson.io"
+c2_port = 4567
