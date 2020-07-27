@@ -4,7 +4,7 @@ Intruder is a small library that simulates IoT attacks, designed to help evaluat
 
 ## Installing
 
-While `Intruder` can be installed as a standalone application, it is recommended it to instead use it as part of the [Scheduler](https://github.com/SIIS-Sentinel/scheduler) application.
+While `Intruder` can be installed as a standalone application, it is recommended it to instead use it as part of the [Scheduler](https://github.com/SIIS-Sentinel/scheduler) application for the hub, and [IoT handlers](https://github.com/SIIS-Sentinel/iot-integrations) for the nodes.
 
 To install it as standalone, follow these steps:
 
