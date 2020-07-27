@@ -1,12 +1,12 @@
 autopep8==1.5.2
-bookkeeper @ git+https://github.com/AdrienCos/bookkeeper
+bookkeeper @ git+https://github.com/SIIS-Sentinel/bookkeeper
 certifi==2020.6.20
 chardet==3.0.4
 dnspython==1.16.0
 flake8==3.8.2
 idna==2.9
 importlib-metadata==1.6.0
--e git+https://github.com/AdrienCos/intruder.git#egg=intruder
+-e git+https://github.com/SIIS-Sentinel/intruder.git#egg=intruder
 mccabe==0.6.1
 mypy==0.770
 mypy-extensions==0.4.3

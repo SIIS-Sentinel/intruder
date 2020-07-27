@@ -8,6 +8,16 @@ from bookkeeper.sql import create_sessions, Session, Attack, Node
 
 
 class IntruderHub():
+    """
+    This class represents the hub side of the Intruder application.
+
+    Is uses an MQTT client to listen for incoming control messages, which it uses to determine which nodes should start which attacks.
+
+    If no MQTT client is passed to the constructor, it will create a new one.
+
+    If no database URL is given, it will use the one provided in the config_hub.py file
+    """
+
     def __init__(self, name: str = "mqtt_intruder_1", client: mqtt.Client = None, debug: bool = False, db_path: str = None):
         self.name: str = name
         if db_path is None:
@@ -30,12 +40,15 @@ class IntruderHub():
             self.client = client
 
     def connect(self) -> None:
+        "Connects the client to the MQTT broker."
         self.client.connect(cfg.broker_addr, cfg.broker_port)
 
     def on_connect(self, client: mqtt.Client, userdata, flags, rc):
+        "Callback method that is triggered when the client (re)connects to the broker."
         self.client.subscribe(self.control_topic)
 
     def on_message(self, client: mqtt.Client, userdata, message: mqtt.MQTTMessage) -> None:
+        "Callback method that is called when the client receives a message."
         if message.topic == self.control_topic:
             try:
                 payload: str = message.payload.decode("utf-8")
@@ -53,12 +66,14 @@ class IntruderHub():
             print(f"Intruder: message from wrong topic received: {message.topic}")
 
     def get_node_id(self, name: str):
+        "Helper method that queries the ID of the given node from the Sentinel database"
         node = self.session.query(Node.id).filter_by(name=name).all()
         if len(node) == 0:
             return 0
         return node[0].id
 
     def add_attack(self, node: int, ts: float, attack_type: int):
+        "Helper method that adds a new Attack to the Sentinel database"
         newAttack: Attack = Attack(
             timestamp=ts, attack_type=attack_type, node_id=node)
         self.session.add(newAttack)
@@ -71,6 +86,9 @@ class IntruderHub():
             start: int,
             duration: int,
             intensity: int):
+        """
+        Crafts and sends an MQTT message to the relevant node, with the data it needs to start an attack.
+        """
         start_time: int = int(time.time() + start)
         payload: str = str(attack_type) + "/" + \
             str(start_time) + "/" + \

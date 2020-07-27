@@ -11,7 +11,7 @@ setup(
     description="The Intruder code for the Sentinel experiments",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/AdrienCos/intruder",
+    url="https://github.com/SIIS-Sentinel/intruder",
     packages=find_packages(),
     install_requires=[
         'dnspython',
@@ -20,7 +20,7 @@ setup(
         'psycopg2',
         'python-nmap',
         'requests',
-        'bookkeeper @ git+http://github.com/AdrienCos/bookkeeper#egg=bookkeeper'
+        'bookkeeper @ git+http://github.com/SIIS-Sentinel/bookkeeper#egg=bookkeeper'
     ],
     python_requires=">=3.5"
 )

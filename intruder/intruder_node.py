@@ -15,6 +15,14 @@ import intruder.config_node as cfg
 
 
 class IntruderNode():
+    """
+    This class represents the node side of the Intruder application.
+
+    Is uses an MQTT client to listen for incoming attack messages, which it uses to start local attacks.
+
+    If no MQTT client is passed to the constructor, it will create a new one.
+    """
+
     def __init__(self, name: str = "mqtt_intruder_1", client: mqtt.Client = None):
         self.name = name
         self.intruder_topic: str = cfg.topic_prefix + self.name
@@ -30,13 +38,16 @@ class IntruderNode():
             self.client = client
 
     def connect(self) -> None:
+        "Connects the client to the MQTT broker."
         self.client.connect(cfg.broker_addr, cfg.broker_port)
         self.client.loop_start()
 
     def on_connect(self, client: mqtt.Client, userdata, flags, rc):
+        "Callback method that is triggered when the client (re)connects to the broker."
         self.client.subscribe(self.intruder_topic)
 
     def on_message(self, client: mqtt.Client, userdata, message: mqtt.MQTTMessage) -> None:
+        "Callback method that is called when the client receives a message."
         if message.topic == self.intruder_topic:
             payload: str = message.payload.decode("utf-8")
             payload_args: List[int] = [int(i) for i in payload.split("/")]
@@ -52,18 +63,19 @@ class IntruderNode():
             print(f"Received message from from topic: {message.topic}")
 
     def loop_forever(self) -> None:
+        "Wrapper around the client.loop_forever() method."
         self.client.loop_forever()
 
     @staticmethod
     def random_message(length: int = 1024) -> bytes:
-        # Generates a random string of ASCII characters of the given length
+        "Generates a random string of ASCII characters of the given length"
         letters = string.ascii_letters
         message = ''.join([rd.choice(letters) for i in range(length)])
         encoded_message = message.encode("utf-8")
         return encoded_message
 
     def routing_attack(self, duration: int, intensity: int, drop_rate: float = 1) -> None:
-        # Simulates a black/grey hole attack where all the traffic gets routed to the node
+        "Simulates a black/grey hole attack where all the traffic gets routed to the node"
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         start_time = time.time()
         while (time.time() - start_time < duration):
@@ -75,7 +87,7 @@ class IntruderNode():
         print("Attack completed")
 
     def exfiltration_attack(self, duration: int, intensity: int) -> None:
-        # Simulates an attacker exfiltrating data
+        "Simulates an attacker exfiltrating data"
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         start_time: int = int(time.time())
         port = rd.randint(cfg.exfil_port_min, cfg.exfil_port_max)
@@ -85,7 +97,7 @@ class IntruderNode():
         print("Attack completed")
 
     def pivot_attack(self, duration: int, intensity: int) -> None:
-        # This simulates the side effects of a corrupted node used as an Nmap scanner
+        "This simulates the side effects of a corrupted node used as an Nmap scanner"
         nm = nmap.PortScanner()
         start_time = int(time.time())
         while (time.time() - start_time < duration):
@@ -93,8 +105,10 @@ class IntruderNode():
         print("Attack completed")
 
     def c2_attack(self, duration: int, intensity: int) -> None:
-        # This simulates the side effects of a node pinging its C&C periodically
-        # Pinging perdiod is `100 - intensity`, in seconds
+        """
+        This simulates the side effects of a node pinging its C&C periodically
+        Pinging perdiod is `100 - intensity`, in seconds
+        """
         start_time: int = int(time.time())
         period: int = 100 - intensity
         while (time.time() - start_time < duration):
@@ -110,6 +124,9 @@ class IntruderNode():
             start: int,
             duration: int,
             intensity: int) -> None:
+        """
+        Starts an attack from the given settings.
+        """
         # Wait until the start of the attack
         if (start > time.time()):
             time.sleep(start - time.time())
