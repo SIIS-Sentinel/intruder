@@ -1,6 +1,6 @@
 autopep8==1.5.2
 bookkeeper @ git+https://github.com/SIIS-Sentinel/bookkeeper
-certifi==2020.6.20
+certifi==2022.12.7
 chardet==3.0.4
 dnspython==1.16.0
 flake8==3.8.2
